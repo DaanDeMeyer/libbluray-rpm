@@ -1,12 +1,12 @@
-%global tarball_date 20101021
-%global git_hash 144a204c0268708606386f8dafa746c7054aeed6
+%global tarball_date 20101028
+%global git_hash c32862b77dea4eac592f41368157889d77710b22
 %global git_short %(echo '%{git_hash}' | cut -c -13)
 
 %global static_build 0
 
 Name:           libbluray
 Version:        0.1
-Release:        0.2.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.3.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -88,11 +88,13 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
+install -Dp -m 644 src/.libs/libbluray.jar  $RPM_BUILD_ROOT%{_javadir}/libbluray.jar
+
 # Install test utilities
 %if %{static_build}
 for i in mpls_dump clpi_dump index_dump mobj_dump sound_dump 
 do install -Dp -m 0755 src/examples/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
-for i in bdsplice libbluray_test list_titles hdmv_test bdj_test
+for i in bdsplice libbluray_test list_titles hdmv_test bdj_test bd_info
 do install -Dp -m 0755 src/examples/.libs/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
 %endif
 
@@ -110,6 +112,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc COPYING doc/README player_wrappers README.txt TODO.txt
 %{_libdir}/*.so.*
+%{_javadir}/libbluray.jar
 
 
 %files devel
@@ -129,6 +132,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Oct 28 2010 Xavier Bachelot <xavier@bachelot.org> 0.1-0.3.20101028gitc32862b77dea4
+- Update to latest snapshot.
+- Install BDJ jar.
+
 * Thu Oct 21 2010 Xavier Bachelot <xavier@bachelot.org> 0.1-0.2.20101021git144a204c02687
 - Fix release tag.
 - Update to latest snapshot.
