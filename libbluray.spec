@@ -1,12 +1,12 @@
-%global tarball_date 20101028
-%global git_hash c32862b77dea4eac592f41368157889d77710b22
+%global tarball_date 20110107
+%global git_hash 0e5902ff9a6f1e122a81cad2ee8707d00a39b58b
 %global git_short %(echo '%{git_hash}' | cut -c -13)
 
 %global static_build 0
 
 Name:           libbluray
-Version:        0.1
-Release:        0.3.%{tarball_date}git%{git_short}%{?dist}
+Version:        0.2
+Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -14,7 +14,7 @@ URL:            http://www.videolan.org/developers/libbluray.html
 # No release yet. Use the commands below to generate a tarball.
 # git clone git://git.videolan.org/libbluray.git
 # cd libbluray
-# git archive --format=tar %{git_hash} --prefix=libbluray/ | bzip2 > libbluray-$( date +%Y%m%d )git%{git_short}.tar.bz2
+# git archive --format=tar %{git_hash} --prefix=libbluray/ | bzip2 > ../libbluray-$( date +%Y%m%d )git%{git_short}.tar.bz2
 Source0:        %{name}-%{tarball_date}git%{git_short}.tar.bz2
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -24,8 +24,10 @@ BuildRequires:  libtool
 BuildRequires:  java-1.6.0-devel
 BuildRequires:  jpackage-utils
 BuildRequires:  ant
+BuildRequires:  libxml2-devel
 BuildRequires:  doxygen
 BuildRequires:  texlive-latex
+BuildRequires:  graphviz
 
 Requires:       java-1.6.0
 Requires:       jpackage-utils
@@ -132,6 +134,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 07 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.1.20110107git0e5902ff9a6f1
+- Update to latest snapshot.                                                                                                                                                                                                                
+- Add BR: libxml2-devel for metadata parser.
+- Add BR: graphviz for doc generation.
+
 * Thu Oct 28 2010 Xavier Bachelot <xavier@bachelot.org> 0.1-0.3.20101028gitc32862b77dea4
 - Update to latest snapshot.
 - Install BDJ jar.
