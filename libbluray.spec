@@ -1,12 +1,12 @@
-%global tarball_date 20110107
-%global git_hash 0e5902ff9a6f1e122a81cad2ee8707d00a39b58b
+%global tarball_date 20110126
+%global git_hash bbf11e43bd82eabce8a4f8aa3ec09bccef18de2e
 %global git_short %(echo '%{git_hash}' | cut -c -13)
 
 %global static_build 0
 
 Name:           libbluray
 Version:        0.2
-Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.2.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -29,9 +29,6 @@ BuildRequires:  doxygen
 BuildRequires:  texlive-latex
 BuildRequires:  graphviz
 
-Requires:       java-1.6.0
-Requires:       jpackage-utils
-
 
 %description
 This package is aiming to provide a full portable free open source bluray
@@ -39,6 +36,18 @@ library, which can be plugged into popular media players to allow full bluray
 navigation and playback on Linux. It will eventually be compatible with all
 current titles, and will be easily portable and embeddable in standard players
 such as mplayer and vlc.
+
+
+%package        java
+Summary:        BDJ support for %{name}
+Group:          Development/Libraries
+Requires:       %{name} = %{version}-%{release}
+Requires:       java-1.6.0
+Requires:       jpackage-utils
+
+%description    java
+The %{name}-java package contains the jar file needed to add BDJ support to
+%{name}.
 
 
 %package        devel
@@ -114,6 +123,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc COPYING doc/README player_wrappers README.txt TODO.txt
 %{_libdir}/*.so.*
+
+
+%files java
+%defattr(-,root,root,-)
 %{_javadir}/libbluray.jar
 
 
@@ -134,8 +147,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan 26 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.2.20110126gitbbf11e43bd82e
+- Update to latest snapshot.
+- Split the BDJ support to a -java subpackage.
+
 * Fri Jan 07 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.1.20110107git0e5902ff9a6f1
-- Update to latest snapshot.                                                                                                                                                                                                                
+- Update to latest snapshot.
 - Add BR: libxml2-devel for metadata parser.
 - Add BR: graphviz for doc generation.
 
