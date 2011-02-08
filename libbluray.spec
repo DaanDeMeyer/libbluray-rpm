@@ -6,7 +6,7 @@
 
 Name:           libbluray
 Version:        0.2
-Release:        0.2.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.3.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -147,6 +147,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2-0.3.20110126gitbbf11e43bd82e
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Wed Jan 26 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.2.20110126gitbbf11e43bd82e
 - Update to latest snapshot.
 - Split the BDJ support to a -java subpackage.
