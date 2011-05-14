@@ -1,12 +1,10 @@
-%global tarball_date 20110126
-%global git_hash bbf11e43bd82eabce8a4f8aa3ec09bccef18de2e
+%global tarball_date 20110514
+%global git_hash 46ee2766038e90731683272e348aaa2aa9d5d199
 %global git_short %(echo '%{git_hash}' | cut -c -13)
-
-%global static_build 0
 
 Name:           libbluray
 Version:        0.2
-Release:        0.2.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.3.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -60,34 +58,15 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 
-%if %{static_build}
-%package        static
-Summary:        Static lib for %{name}
-Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
-
-%description    static
-The %{name}-static package contains static libraries.
-%endif
-
-
 %prep
 %setup -q -n %{name}
 
 
 %build
 autoreconf -vif
-# Some of the examples need the static lib to build.
-# Don't build them if not building the static lib too.
-%configure \
-%if !%{static_build}
-           --disable-static \
-           --disable-examples \
-%else
+%configure --disable-static \
            --enable-examples \
-%endif
-           --with-jdk=%{_jvmdir}/java-1.6.0 \
-           --enable-bdjava
+           --enable-bdjava --with-jdk=%{_jvmdir}/java-1.6.0
 make %{?_smp_mflags}
 make doxygen-pdf
 # Remove uneeded script
@@ -99,15 +78,14 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
+# Install BD-J jar
 install -Dp -m 644 src/.libs/libbluray.jar  $RPM_BUILD_ROOT%{_javadir}/libbluray.jar
 
 # Install test utilities
-%if %{static_build}
-for i in mpls_dump clpi_dump index_dump mobj_dump sound_dump 
+for i in clpi_dump index_dump mobj_dump mpls_dump sound_dump
 do install -Dp -m 0755 src/examples/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
-for i in bdsplice libbluray_test list_titles hdmv_test bdj_test bd_info
-do install -Dp -m 0755 src/examples/.libs/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
-%endif
+for i in bd_info bdj_test bdsplice hdmv_test libbluray_test list_titles 
+do install -Dp -m755 src/examples/.libs/$i %{buildroot}%{_bindir}/$i; done
 
 
 %clean
@@ -123,6 +101,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc COPYING doc/README player_wrappers README.txt TODO.txt
 %{_libdir}/*.so.*
+%{_bindir}/*
 
 
 %files java
@@ -138,15 +117,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/libbluray.pc
 
 
-%if %{static_build}
-%files static
-%defattr(-,root,root,-)
-%{_libdir}/libbluray.a
-%{_bindir}/*
-%endif
-
-
 %changelog
+* Sat May 14 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.3.20110514git46ee2766038e9
+- Update to latest snapshot.
+- Drop -static subpackage.
+
 * Wed Jan 26 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.2.20110126gitbbf11e43bd82e
 - Update to latest snapshot.
 - Split the BDJ support to a -java subpackage.
