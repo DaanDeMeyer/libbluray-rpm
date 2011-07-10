@@ -1,10 +1,10 @@
-%global tarball_date 20110514
-%global git_hash 46ee2766038e90731683272e348aaa2aa9d5d199
+%global tarball_date 20110710
+%global git_hash 51d7d60a96d064d46db20b5665e477bf3c5481f0
 %global git_short %(echo '%{git_hash}' | cut -c -13)
 
 Name:           libbluray
 Version:        0.2
-Release:        0.4.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.5.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -118,6 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jul 10 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.5.20110710git51d7d60a96d06
+- Update to latest snapshot.
+
 * Sat May 14 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.4.20110514git46ee2766038e9
 - Update to latest snapshot.
 - Drop -static subpackage.
