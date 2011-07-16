@@ -93,8 +93,11 @@ install -Dp -m 644 src/.libs/libbluray.jar  $RPM_BUILD_ROOT%{_javadir}/libbluray
 # Install test utilities
 for i in clpi_dump index_dump mobj_dump mpls_dump sound_dump
 do install -Dp -m 0755 src/examples/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
-for i in bd_info bdj_test bdsplice hdmv_test libbluray_test list_titles 
+for i in bd_info bdsplice hdmv_test libbluray_test list_titles 
 do install -Dp -m755 src/examples/.libs/$i %{buildroot}%{_bindir}/$i; done
+%ifnarch ppc64
+install -Dp -m755 src/examples/.libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
+%endif
 
 
 %clean
