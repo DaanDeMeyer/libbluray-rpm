@@ -4,7 +4,7 @@
 
 Name:           libbluray
 Version:        0.2
-Release:        0.5.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.5.%{tarball_date}git%{git_short}%{?dist}.1
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -19,9 +19,11 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
+%ifnarch ppc64
 BuildRequires:  java-1.6.0-devel
 BuildRequires:  jpackage-utils
 BuildRequires:  ant
+%endif
 BuildRequires:  libxml2-devel
 BuildRequires:  doxygen
 BuildRequires:  texlive-latex
@@ -36,6 +38,7 @@ current titles, and will be easily portable and embeddable in standard players
 such as mplayer and vlc.
 
 
+%ifnarch ppc64
 %package        java
 Summary:        BDJ support for %{name}
 Group:          Development/Libraries
@@ -46,6 +49,7 @@ Requires:       jpackage-utils
 %description    java
 The %{name}-java package contains the jar file needed to add BDJ support to
 %{name}.
+%endif
 
 
 %package        devel
@@ -66,7 +70,10 @@ developing applications that use %{name}.
 autoreconf -vif
 %configure --disable-static \
            --enable-examples \
+%ifnarch ppc64
            --enable-bdjava --with-jdk=%{_jvmdir}/java-1.6.0
+%endif
+
 make %{?_smp_mflags}
 make doxygen-pdf
 # Remove uneeded script
@@ -78,8 +85,10 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
+%ifnarch ppc64
 # Install BD-J jar
 install -Dp -m 644 src/.libs/libbluray.jar  $RPM_BUILD_ROOT%{_javadir}/libbluray.jar
+%endif
 
 # Install test utilities
 for i in clpi_dump index_dump mobj_dump mpls_dump sound_dump
@@ -104,9 +113,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 
 
+%ifnarch ppc64
 %files java
 %defattr(-,root,root,-)
 %{_javadir}/libbluray.jar
+%endif
 
 
 %files devel
@@ -118,6 +129,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Jul 16 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.5.20110710git51d7d60a96d06.1
+- Don't build java subpackage on ppc64, no java-1.6.0-devel package.
+
 * Sun Jul 10 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.5.20110710git51d7d60a96d06
 - Update to latest snapshot.
 
