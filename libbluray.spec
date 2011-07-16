@@ -4,7 +4,7 @@
 
 Name:           libbluray
 Version:        0.2
-Release:        0.5.%{tarball_date}git%{git_short}%{?dist}.1
+Release:        0.6.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -132,7 +132,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sat Jul 16 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.5.20110710git51d7d60a96d06.1
+* Sat Jul 16 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.6.20110710git51d7d60a96d06
 - Don't build java subpackage on ppc64, no java-1.6.0-devel package.
 
 * Sun Jul 10 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.5.20110710git51d7d60a96d06
