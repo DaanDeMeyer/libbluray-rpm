@@ -1,10 +1,10 @@
-%global tarball_date 20110710
-%global git_hash 51d7d60a96d064d46db20b5665e477bf3c5481f0
+%global tarball_date 20111023
+%global git_hash e037110f11e707e223b715f70920913afecfe297
 %global git_short %(echo '%{git_hash}' | cut -c -13)
 
 Name:           libbluray
 Version:        0.2
-Release:        0.6.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.7.%{tarball_date}git%{git_short}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
 License:        LGPLv2+
@@ -132,6 +132,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Oct 23 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.7.20111023gite037110f11e70
+- Update to latest snapshot.
+
 * Sat Jul 16 2011 Xavier Bachelot <xavier@bachelot.org> 0.2-0.6.20110710git51d7d60a96d06
 - Don't build java subpackage on ppc64, no java-1.6.0-devel package.
 
