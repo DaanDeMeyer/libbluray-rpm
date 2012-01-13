@@ -6,7 +6,7 @@
 Name:           libbluray
 Version:        0.2.1
 %if %{snapshot}
-Release:        0.7.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
 %else
 Release:        1%{?dist}
 %endif
@@ -154,6 +154,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.1-1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Thu Dec 01 2011 Xavier Bachelot <xavier@bachelot.org> 
 - First upstream official release.
 - Fix BD-J build (missing files in upstream tarball).
