@@ -8,7 +8,7 @@ Version:        0.2.1
 %if %{snapshot}
 Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        1%{?dist}
+Release:        2%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -34,7 +34,7 @@ BuildRequires:  automake
 BuildRequires:  libtool
 %endif
 %ifnarch ppc64
-BuildRequires:  java-1.6.0-devel
+BuildRequires:  java-devel >= 1:1.6.0 
 BuildRequires:  jpackage-utils
 BuildRequires:  ant
 %endif
@@ -57,7 +57,7 @@ such as mplayer and vlc.
 Summary:        BDJ support for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Requires:       java-1.6.0
+Requires:       java >= 1:1.6.0 
 Requires:       jpackage-utils
 
 %description    java
@@ -93,7 +93,7 @@ autoreconf -vif
 %configure --disable-static \
            --enable-examples \
 %ifnarch ppc64
-           --enable-bdjava --with-jdk=%{_jvmdir}/java-1.6.0
+           --enable-bdjava --with-jdk=%{_jvmdir}/java-1.7.0
 %endif
 
 make %{?_smp_mflags}
@@ -154,10 +154,13 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 01 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.1-2
+- Rebuild for openjdk 7.
+
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.1-1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
-* Thu Dec 01 2011 Xavier Bachelot <xavier@bachelot.org> 
+* Thu Dec 01 2011 Xavier Bachelot <xavier@bachelot.org> 0.2.1-1
 - First upstream official release.
 - Fix BD-J build (missing files in upstream tarball).
 - Have subpackages require an arch-specific base package.
