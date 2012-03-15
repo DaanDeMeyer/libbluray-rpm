@@ -8,7 +8,7 @@ Version:        0.2.1
 %if %{snapshot}
 Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        2%{?dist}
+Release:        3%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -99,7 +99,7 @@ autoreconf -vif
 make %{?_smp_mflags}
 make doxygen-pdf
 # Remove uneeded script
-rm doc/doxygen/html/installdox
+rm -f doc/doxygen/html/installdox 
 
 
 %install
@@ -154,6 +154,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 15 2012 Rex Dieter <rdieter@fedoraproject.org> 0.2.1-3
+- make build non-fatal when using doxygen-1.8 (doesn't produce installdox anymore)
+
 * Wed Feb 01 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.1-2
 - Rebuild for openjdk 7.
 
