@@ -4,11 +4,11 @@
 %global git_short %(echo '%{git_hash}' | cut -c -13)
 
 Name:           libbluray
-Version:        0.2.1
+Version:        0.2.2
 %if %{snapshot}
 Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        4%{?dist}
+Release:        1%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -23,9 +23,6 @@ Source0:        %{name}-%{tarball_date}git%{git_short}.tar.bz2
 %else
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 %endif
-# Fixed upstream, will not be needed for next upstream release
-Source1:        libbluray-0.2.1-bdj_build.xml
-Source2:        libbluray-0.2.1-bdj_java_subdir.tar.bz2
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if %{snapshot}
@@ -81,8 +78,6 @@ developing applications that use %{name}.
 %setup -q -n %{name}
 %else
 %setup -q
-install -Dp -m 644 %{SOURCE1} src/libbluray/bdj/build.xml
-tar xjf %{SOURCE2}
 %endif
 
 
@@ -154,6 +149,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Mar 20 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.2-1
+- Update to 0.2.2.
+
 * Tue Mar 20 2012 Karsten Hopp <karsten@redhat.com> 0.2.1-4
 - ppc(64) has no java-1.7.0-open yet, disable java subpackage on both PPC archs
 
