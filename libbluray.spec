@@ -8,7 +8,7 @@ Version:        0.2.1
 %if %{snapshot}
 Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        3%{?dist}
+Release:        4%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -52,7 +52,7 @@ current titles, and will be easily portable and embeddable in standard players
 such as mplayer and vlc.
 
 
-%ifnarch ppc64
+%ifnarch ppc ppc64
 %package        java
 Summary:        BDJ support for %{name}
 Group:          Development/Libraries
@@ -92,7 +92,7 @@ autoreconf -vif
 %endif
 %configure --disable-static \
            --enable-examples \
-%ifnarch ppc64
+%ifnarch ppc ppc64
            --enable-bdjava --with-jdk=%{_jvmdir}/java-1.7.0
 %endif
 
@@ -107,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
-%ifnarch ppc64
+%ifnarch ppc ppc64
 # Install BD-J jar
 install -Dp -m 644 src/.libs/libbluray.jar  $RPM_BUILD_ROOT%{_javadir}/libbluray.jar
 %endif
@@ -117,7 +117,7 @@ for i in clpi_dump index_dump mobj_dump mpls_dump sound_dump
 do install -Dp -m 0755 src/examples/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
 for i in bd_info bdsplice hdmv_test libbluray_test list_titles 
 do install -Dp -m755 src/examples/.libs/$i %{buildroot}%{_bindir}/$i; done
-%ifnarch ppc64
+%ifnarch ppc ppc64
 install -Dp -m755 src/examples/.libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %endif
 
@@ -138,7 +138,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 
 
-%ifnarch ppc64
+%ifnarch ppc ppc64
 %files java
 %defattr(-,root,root,-)
 %{_javadir}/libbluray.jar
@@ -154,6 +154,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Mar 20 2012 Karsten Hopp <karsten@redhat.com> 0.2.1-4
+- ppc(64) has no java-1.7.0-open yet, disable java subpackage on both PPC archs
+
 * Thu Mar 15 2012 Rex Dieter <rdieter@fedoraproject.org> 0.2.1-3
 - make build non-fatal when using doxygen-1.8 (doesn't produce installdox anymore)
 
