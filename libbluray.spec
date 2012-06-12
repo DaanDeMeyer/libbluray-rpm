@@ -8,7 +8,7 @@ Version:        0.2.2
 %if %{snapshot}
 Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        1%{?dist}
+Release:        2%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -23,6 +23,7 @@ Source0:        %{name}-%{tarball_date}git%{git_short}.tar.bz2
 %else
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 %endif
+Patch0:         libbluray-0.2.2-no_doxygen_timestamp.patch
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if %{snapshot}
@@ -79,6 +80,7 @@ developing applications that use %{name}.
 %else
 %setup -q
 %endif
+%patch0 -p1 -b .no_timestamp
 
 
 %build
@@ -149,6 +151,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jun 12 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.2-2
+- Fix multilib conflict in doxygen docs (RHBZ#831401).
+
 * Tue Mar 20 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.2-1
 - Update to 0.2.2.
 
