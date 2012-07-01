@@ -2,13 +2,14 @@
 %global tarball_date 20111023
 %global git_hash e037110f11e707e223b715f70920913afecfe297
 %global git_short %(echo '%{git_hash}' | cut -c -13)
+%global build_pdf_doc 0
 
 Name:           libbluray
 Version:        0.2.2
 %if %{snapshot}
 Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        2%{?dist}
+Release:        3%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -88,13 +89,20 @@ developing applications that use %{name}.
 autoreconf -vif
 %endif
 %configure --disable-static \
+%if %{build_pdf_doc}
+           --enable-doxygen-pdf \
+%else
+           --disable-doxygen-pdf \
+%endif
+           --disable-doxygen-ps \
+           --enable-doxygen-html \
            --enable-examples \
 %ifnarch ppc ppc64
            --enable-bdjava --with-jdk=%{_jvmdir}/java-1.7.0
 %endif
 
 make %{?_smp_mflags}
-make doxygen-pdf
+make doxygen-doc
 # Remove uneeded script
 rm -f doc/doxygen/html/installdox 
 
@@ -144,13 +152,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,root,-)
-%doc doc/doxygen/html doc/doxygen/libbluray.pdf
+%doc doc/doxygen/html
+%if %{build_pdf_doc}
+%doc doc/doxygen/libbluray.pdf
+%endif
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/libbluray.pc
 
 
 %changelog
+* Tue Jun 12 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.2-3
+- Don't build pdf doc, it breaks multilib (see RHBZ#835952).
+
 * Tue Jun 12 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.2-2
 - Fix multilib conflict in doxygen docs (RHBZ#831401).
 
