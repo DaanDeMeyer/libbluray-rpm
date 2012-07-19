@@ -7,7 +7,7 @@
 Name:           libbluray
 Version:        0.2.2
 %if %{snapshot}
-Release:        0.8.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.9.%{tarball_date}git%{git_short}%{?dist}
 %else
 Release:        3%{?dist}
 %endif
@@ -162,6 +162,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Tue Jun 12 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.2-3
 - Don't build pdf doc, it breaks multilib (see RHBZ#835952).
 
