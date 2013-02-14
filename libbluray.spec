@@ -7,9 +7,9 @@
 Name:           libbluray
 Version:        0.2.3
 %if %{snapshot}
-Release:        0.9.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.10.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        1%{?dist}
+Release:        2%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -162,6 +162,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Tue Aug 21 2012 Xavier Bachelot <xavier@bachelot.org> 0.2.3-1
 - Update to 0.2.3.
 
