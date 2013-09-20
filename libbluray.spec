@@ -1,15 +1,15 @@
 %global snapshot 0
-%global tarball_date 20111023
-%global git_hash e037110f11e707e223b715f70920913afecfe297
+%global tarball_date 20130427
+%global git_hash 2b002fe52e8c2506ed52bf56c8b517d350dbb281
 %global git_short %(echo '%{git_hash}' | cut -c -13)
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.2.3
+Version:        0.4.0
 %if %{snapshot}
-Release:        0.11.%{tarball_date}git%{git_short}%{?dist}
+Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        3%{?dist}
+Release:        1%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -32,7 +32,7 @@ BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
 %endif
-%ifnarch ppc64
+%ifnarch ppc ppc64
 BuildRequires:  java-devel >= 1:1.6.0 
 BuildRequires:  jpackage-utils
 BuildRequires:  ant
@@ -41,6 +41,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  doxygen
 BuildRequires:  texlive-latex
 BuildRequires:  graphviz
+BuildRequires:  freetype-devel
 
 
 %description
@@ -88,6 +89,7 @@ developing applications that use %{name}.
 %if %{snapshot}
 autoreconf -vif
 %endif
+export JDK_HOME="%{_jvmdir}/java-1.7.0"
 %configure --disable-static \
 %if %{build_pdf_doc}
            --enable-doxygen-pdf \
@@ -98,8 +100,12 @@ autoreconf -vif
            --enable-doxygen-html \
            --enable-examples \
 %ifnarch ppc ppc64
-           --enable-bdjava --with-jdk=%{_jvmdir}/java-1.7.0
+           --enable-bdjava
 %endif
+
+# Fix rpath issue
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 make %{?_smp_mflags}
 make doxygen-doc
@@ -112,16 +118,12 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
-%ifnarch ppc ppc64
-# Install BD-J jar
-install -Dp -m 644 src/.libs/libbluray.jar  $RPM_BUILD_ROOT%{_javadir}/libbluray.jar
-%endif
-
 # Install test utilities
-for i in clpi_dump index_dump mobj_dump mpls_dump sound_dump
+for i in clpi_dump index_dump mobj_dump mpls_dump sound_dump;
 do install -Dp -m 0755 src/examples/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
-for i in bd_info bdsplice hdmv_test libbluray_test list_titles 
-do install -Dp -m755 src/examples/.libs/$i %{buildroot}%{_bindir}/$i; done
+for i in bd_info bdsplice hdmv_test libbluray_test list_titles;
+do install -Dp -m 0755 src/examples/.libs/$i %{buildroot}%{_bindir}/$i; done;
+
 %ifnarch ppc ppc64
 install -Dp -m755 src/examples/.libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %endif
@@ -146,7 +148,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch ppc ppc64
 %files java
 %defattr(-,root,root,-)
-%{_javadir}/libbluray.jar
+%{_libdir}/libbluray/libbluray.jar
 %endif
 
 
@@ -162,6 +164,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep 20 2013 Xavier Bachelot <xavier@bachelot.org> 0.4.0-1
+- Update to 0.4.0.
+- Fix rpath issues with some test utilities.
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.2.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
