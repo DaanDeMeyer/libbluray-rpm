@@ -9,7 +9,7 @@ Version:        0.4.0
 %if %{snapshot}
 Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        1%{?dist}
+Release:        2%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -53,18 +53,27 @@ such as mplayer and vlc.
 
 
 %ifnarch ppc ppc64
-%package        java
+%package        bdj
 Summary:        BDJ support for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       java >= 1:1.6.0 
 Requires:       jpackage-utils
+Obsoletes:      libbluray-java < 0.4.0-2
+Provides:       libbluray-java = %{version}-%{release}
 
-%description    java
-The %{name}-java package contains the jar file needed to add BDJ support to
+%description    bdj
+The %{name}-bdj package contains the jar file needed to add BDJ support to
 %{name}.
 %endif
 
+%package utils
+Summary:        Test utilities for %{name}
+Group:          Development/Libraries
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description utils
+The %{name}-utils package contains test utilities for %{name}.
 
 %package        devel
 Summary:        Development files for %{name}
@@ -140,17 +149,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING player_wrappers README.txt
+%doc COPYING README.txt
 %{_libdir}/*.so.*
-%{_bindir}/*
-
 
 %ifnarch ppc ppc64
-%files java
+%files bdj
 %defattr(-,root,root,-)
 %{_libdir}/libbluray/libbluray.jar
 %endif
 
+%files utils
+%defattr(-,root,root,-)
+%{_bindir}/*
 
 %files devel
 %defattr(-,root,root,-)
@@ -164,6 +174,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 26 2013 Xavier Bachelot <xavier@bachelot.org> 0.4.0-2
+- Move test utilities to their own subpackage to avoid multilib conflict.
+  Fix RHBZ#1034307.
+- Rename java subpackage to bdj.
+- Remove obsolete xine-lib bluray input plugin from doc files.
+
 * Fri Sep 20 2013 Xavier Bachelot <xavier@bachelot.org> 0.4.0-1
 - Update to 0.4.0.
 - Fix rpath issues with some test utilities.
