@@ -9,7 +9,7 @@ Version:        0.5.0
 %if %{snapshot}
 Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        1%{?dist}
+Release:        2%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -33,7 +33,11 @@ BuildRequires:  automake
 BuildRequires:  libtool
 %endif
 %ifnarch ppc ppc64
-BuildRequires:  java-devel >= 1:1.7.0 
+%if 0%{?rhel} >= 6
+BuildRequires:  java7-devel >= 1:1.7.0 
+%else
+BuildRequires:  java-devel >= 1:1.7.0
+%endif
 BuildRequires:  jpackage-utils
 BuildRequires:  ant
 %endif
@@ -174,6 +178,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Dec 22 2013 Xavier Bachelot <xavier@bachelot.org> 0.5.0-2
+- Fix build on EL6 (BR: java7-devel instead of java-devel).
+
 * Sat Dec 21 2013 Xavier Bachelot <xavier@bachelot.org> 0.5.0-1
 - Update to 0.5.0.
 
