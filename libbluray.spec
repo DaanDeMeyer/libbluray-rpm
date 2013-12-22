@@ -5,11 +5,11 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.4.0
+Version:        0.5.0
 %if %{snapshot}
 Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        2%{?dist}
+Release:        1%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -33,7 +33,7 @@ BuildRequires:  automake
 BuildRequires:  libtool
 %endif
 %ifnarch ppc ppc64
-BuildRequires:  java-devel >= 1:1.6.0 
+BuildRequires:  java-devel >= 1:1.7.0 
 BuildRequires:  jpackage-utils
 BuildRequires:  ant
 %endif
@@ -57,14 +57,15 @@ such as mplayer and vlc.
 Summary:        BDJ support for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Requires:       java >= 1:1.6.0 
+Requires:       java >= 1:1.7.0 
 Requires:       jpackage-utils
 Obsoletes:      libbluray-java < 0.4.0-2
 Provides:       libbluray-java = %{version}-%{release}
 
 %description    bdj
-The %{name}-bdj package contains the jar file needed to add BDJ support to
+The %{name}-bdj package contains the jar file needed to add BD-J support to
 %{name}.
+BD-J support is still considered alpha.
 %endif
 
 %package utils
@@ -128,13 +129,12 @@ make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 # Install test utilities
-for i in clpi_dump index_dump mobj_dump mpls_dump sound_dump;
-do install -Dp -m 0755 src/examples/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
-for i in bd_info bdsplice hdmv_test libbluray_test list_titles;
-do install -Dp -m 0755 src/examples/.libs/$i %{buildroot}%{_bindir}/$i; done;
+for i in bdsplice clpi_dump hdmv_test index_dump libbluray_test \
+         list_titles mobj_dump mpls_dump sound_dump
+do install -Dp -m 0755 src/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
 
 %ifnarch ppc ppc64
-install -Dp -m755 src/examples/.libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
+install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %endif
 
 
@@ -174,6 +174,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Dec 21 2013 Xavier Bachelot <xavier@bachelot.org> 0.5.0-1
+- Update to 0.5.0.
+
 * Tue Nov 26 2013 Xavier Bachelot <xavier@bachelot.org> 0.4.0-2
 - Move test utilities to their own subpackage to avoid multilib conflict.
   Fix RHBZ#1034307.
