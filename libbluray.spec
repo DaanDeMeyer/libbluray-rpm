@@ -9,7 +9,7 @@ Version:        0.5.0
 %if %{snapshot}
 Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        2%{?dist}
+Release:        3%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
 Group:          System Environment/Libraries
@@ -32,7 +32,7 @@ BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
 %endif
-%ifnarch ppc ppc64
+%ifnarch ppc ppc64 ppc64le
 %if 0%{?rhel} >= 6
 BuildRequires:  java7-devel >= 1:1.7.0 
 %else
@@ -56,7 +56,7 @@ current titles, and will be easily portable and embeddable in standard players
 such as mplayer and vlc.
 
 
-%ifnarch ppc ppc64
+%ifnarch ppc ppc64 ppc64le
 %package        bdj
 Summary:        BDJ support for %{name}
 Group:          Development/Libraries
@@ -113,7 +113,7 @@ export JDK_HOME="%{_jvmdir}/java-1.7.0"
            --disable-doxygen-ps \
            --enable-doxygen-html \
            --enable-examples \
-%ifnarch ppc ppc64
+%ifnarch ppc ppc64 ppc64le
            --enable-bdjava
 %endif
 
@@ -137,7 +137,7 @@ for i in bdsplice clpi_dump hdmv_test index_dump libbluray_test \
          list_titles mobj_dump mpls_dump sound_dump
 do install -Dp -m 0755 src/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
 
-%ifnarch ppc ppc64
+%ifnarch ppc ppc64 ppc64le
 install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %endif
 
@@ -156,7 +156,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING README.txt
 %{_libdir}/*.so.*
 
-%ifnarch ppc ppc64
+%ifnarch ppc ppc64 ppc64le
 %files bdj
 %defattr(-,root,root,-)
 %{_libdir}/libbluray/libbluray.jar
@@ -178,6 +178,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 10 2013 Xavier Bachelot <xavier@bachelot.org> 0.5.0-3
+- Disable BD-J support for ppc64le arch (RHBZ#1051604).
+
 * Sun Dec 22 2013 Xavier Bachelot <xavier@bachelot.org> 0.5.0-2
 - Fix build on EL6 (BR: java7-devel instead of java-devel).
 
