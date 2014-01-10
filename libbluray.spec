@@ -178,7 +178,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Jan 10 2013 Xavier Bachelot <xavier@bachelot.org> 0.5.0-3
+* Fri Jan 10 2014 Xavier Bachelot <xavier@bachelot.org> 0.5.0-3
 - Disable BD-J support for ppc64le arch (RHBZ#1051604).
 
 * Sun Dec 22 2013 Xavier Bachelot <xavier@bachelot.org> 0.5.0-2
