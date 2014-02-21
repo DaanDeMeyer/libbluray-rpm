@@ -9,10 +9,9 @@ Version:        0.5.0
 %if %{snapshot}
 Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
 %else
-Release:        3%{?dist}
+Release:        4%{?dist}
 %endif
 Summary:        Library to access Blu-Ray disks for video playback 
-Group:          System Environment/Libraries
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
 %if %{snapshot}
@@ -25,7 +24,6 @@ Source0:        %{name}-%{tarball_date}git%{git_short}.tar.bz2
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 %endif
 Patch0:         libbluray-0.2.2-no_doxygen_timestamp.patch
-BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if %{snapshot}
 BuildRequires:  autoconf
@@ -61,7 +59,11 @@ such as mplayer and vlc.
 Summary:        BDJ support for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Requires:       java >= 1:1.7.0 
+%if 0{?fedora} > 20
+Requires:       java-headless >= 1:1.7.0
+%else
+Requires:       java >= 1:1.7.0
+%endif
 Requires:       jpackage-utils
 Obsoletes:      libbluray-java < 0.4.0-2
 Provides:       libbluray-java = %{version}-%{release}
@@ -128,7 +130,6 @@ rm -f doc/doxygen/html/installdox
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
@@ -142,32 +143,24 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %endif
 
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
 
 %files
-%defattr(-,root,root,-)
 %doc COPYING README.txt
 %{_libdir}/*.so.*
 
 %ifnarch ppc ppc64 ppc64le
 %files bdj
-%defattr(-,root,root,-)
 %{_libdir}/libbluray/libbluray.jar
 %endif
 
 %files utils
-%defattr(-,root,root,-)
 %{_bindir}/*
 
 %files devel
-%defattr(-,root,root,-)
 %doc doc/doxygen/html
 %if %{build_pdf_doc}
 %doc doc/doxygen/libbluray.pdf
@@ -178,6 +171,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 21 2014 Xavier Bachelot <xavier@bachelot.org> 0.5.0-4
+- Requires: java-headless for Fedora 21+ (RHBZ#1068351).
+- Modernize specfile.
+
 * Fri Jan 10 2014 Xavier Bachelot <xavier@bachelot.org> 0.5.0-3
 - Disable BD-J support for ppc64le arch (RHBZ#1051604).
 
