@@ -57,9 +57,8 @@ such as mplayer and vlc.
 %ifnarch ppc ppc64 ppc64le
 %package        bdj
 Summary:        BDJ support for %{name}
-Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-%if 0{?fedora} > 20
+%if 0%{?fedora} > 20
 Requires:       java-headless >= 1:1.7.0
 %else
 Requires:       java >= 1:1.7.0
@@ -76,7 +75,6 @@ BD-J support is still considered alpha.
 
 %package utils
 Summary:        Test utilities for %{name}
-Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description utils
@@ -84,7 +82,6 @@ The %{name}-utils package contains test utilities for %{name}.
 
 %package        devel
 Summary:        Development files for %{name}
-Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    devel
