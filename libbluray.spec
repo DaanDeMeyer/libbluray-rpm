@@ -1,4 +1,4 @@
-%global snapshot 0
+#global snapshot 1
 %global tarball_date 20130427
 %global git_hash 2b002fe52e8c2506ed52bf56c8b517d350dbb281
 %global git_short %(echo '%{git_hash}' | cut -c -13)
@@ -6,15 +6,11 @@
 
 Name:           libbluray
 Version:        0.5.0
-%if %{snapshot}
-Release:        0.1.%{tarball_date}git%{git_short}%{?dist}
-%else
-Release:        4%{?dist}
-%endif
+Release:        5%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
-%if %{snapshot}
+%if 0%{?snapshot}
 # Use the commands below to generate a tarball.
 # git clone git://git.videolan.org/libbluray.git
 # cd libbluray
@@ -25,7 +21,7 @@ Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%
 %endif
 Patch0:         libbluray-0.2.2-no_doxygen_timestamp.patch
 
-%if %{snapshot}
+%if 0%{?snapshot}
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
@@ -90,7 +86,7 @@ developing applications that use %{name}.
 
 
 %prep
-%if %{snapshot}
+%if 0%{?snapshot}
 %setup -q -n %{name}
 %else
 %setup -q
@@ -99,7 +95,7 @@ developing applications that use %{name}.
 
 
 %build
-%if %{snapshot}
+%if 0%{?snapshot}
 autoreconf -vif
 %endif
 export JDK_HOME="%{_jvmdir}/java-1.7.0"
@@ -168,6 +164,9 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Sat Apr 26 2014 Xavier Bachelot <xavier@bachelot.org> 0.5.0-5
+- Tweak the Release: tag to accomodate rpmdev-bumpspec.
+
 * Fri Feb 21 2014 Xavier Bachelot <xavier@bachelot.org> 0.5.0-4
 - Requires: java-headless for Fedora 21+ (RHBZ#1068351).
 - Modernize specfile.
