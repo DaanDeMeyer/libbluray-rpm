@@ -5,8 +5,8 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.5.0
-Release:        5%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
+Version:        0.6.0
+Release:        1%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -147,7 +147,7 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 %ifnarch ppc ppc64 ppc64le
 %files bdj
-%{_libdir}/libbluray/libbluray.jar
+%{_javadir}/libbluray-j2se-%{version}.jar
 %endif
 
 %files utils
@@ -164,6 +164,9 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Wed Jun 04 2014 Xavier Bachelot <xavier@bachelot.org> 0.6.0-1
+- Update to 0.6.0.
+
 * Sat Apr 26 2014 Xavier Bachelot <xavier@bachelot.org> 0.5.0-5
 - Tweak the Release: tag to accomodate rpmdev-bumpspec.
 
