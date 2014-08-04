@@ -98,7 +98,11 @@ developing applications that use %{name}.
 %if 0%{?snapshot}
 autoreconf -vif
 %endif
+%if 0%{?fedora} > 20
+export JDK_HOME="%{_jvmdir}/java-1.8.0"
+%else
 export JDK_HOME="%{_jvmdir}/java-1.7.0"
+%endif
 %configure --disable-static \
 %if %{build_pdf_doc}
            --enable-doxygen-pdf \
@@ -166,6 +170,7 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %changelog
 * Tue Aug 05 2014 Xavier Bachelot <xavier@bachelot.org> 0.6.1-1
 - Update to 0.6.1.
+- Fix building with openJDK 8.
 
 * Wed Jun 04 2014 Xavier Bachelot <xavier@bachelot.org> 0.6.0-1
 - Update to 0.6.0.
