@@ -5,8 +5,8 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.6.1
-Release:        2%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
+Version:        0.6.2
+Release:        1%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -168,6 +168,9 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Thu Sep 04 2014 Xavier Bachelot <xavier@bachelot.org> 0.6.2-1
+- Update to 0.6.2.
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
