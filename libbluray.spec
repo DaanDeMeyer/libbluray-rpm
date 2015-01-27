@@ -5,7 +5,7 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.6.2
+Version:        0.7.0
 Release:        1%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
@@ -40,6 +40,7 @@ BuildRequires:  doxygen
 BuildRequires:  texlive-latex
 BuildRequires:  graphviz
 BuildRequires:  freetype-devel
+BuildRequires:  fontconfig-devel
 
 
 %description
@@ -168,6 +169,9 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Tue Jan 27 2015 Xavier Bachelot <xavier@bachelot.org> 0.7.0-1
+- Update to 0.7.0.
+
 * Thu Sep 04 2014 Xavier Bachelot <xavier@bachelot.org> 0.6.2-1
 - Update to 0.6.2.
 
