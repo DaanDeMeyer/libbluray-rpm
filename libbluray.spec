@@ -5,7 +5,7 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.7.0
+Version:        0.8.0
 Release:        1%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
@@ -19,7 +19,7 @@ Source0:        %{name}-%{tarball_date}git%{git_short}.tar.bz2
 %else
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 %endif
-Patch0:         libbluray-0.2.2-no_doxygen_timestamp.patch
+Patch0:         libbluray-0.8.0-no_doxygen_timestamp.patch
 
 %if 0%{?snapshot}
 BuildRequires:  autoconf
@@ -113,6 +113,7 @@ export JDK_HOME="%{_jvmdir}/java-1.7.0"
            --disable-doxygen-ps \
            --enable-doxygen-html \
            --enable-examples \
+           --enable-udf \
 %ifnarch ppc ppc64 ppc64le
            --enable-bdjava
 %endif
@@ -132,12 +133,12 @@ make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
 # Install test utilities
-for i in bdsplice clpi_dump hdmv_test index_dump libbluray_test \
+for i in bdjo_dump bdsplice clpi_dump hdmv_test index_dump libbluray_test \
          list_titles mobj_dump mpls_dump sound_dump
-do install -Dp -m 0755 src/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
+do install -Dp -m 0755 .libs/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
 
 %ifnarch ppc ppc64 ppc64le
-install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
+install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %endif
 
 
@@ -169,6 +170,9 @@ install -Dp -m755 src/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Wed Apr 29 2015 Xavier Bachelot <xavier@bachelot.org> 0.8.0-1
+- Update to 0.8.0 (RHBZ#1217475).
+
 * Tue Jan 27 2015 Xavier Bachelot <xavier@bachelot.org> 0.7.0-1
 - Update to 0.7.0.
 
