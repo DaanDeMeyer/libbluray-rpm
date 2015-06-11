@@ -6,7 +6,7 @@
 
 Name:           libbluray
 Version:        0.8.0
-Release:        1%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
+Release:        2%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -26,7 +26,6 @@ BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
 %endif
-%ifnarch ppc ppc64 ppc64le
 %if 0%{?rhel} >= 6
 BuildRequires:  java7-devel >= 1:1.7.0 
 %else
@@ -34,7 +33,6 @@ BuildRequires:  java-devel >= 1:1.7.0
 %endif
 BuildRequires:  jpackage-utils
 BuildRequires:  ant
-%endif
 BuildRequires:  libxml2-devel
 BuildRequires:  doxygen
 BuildRequires:  texlive-latex
@@ -51,7 +49,6 @@ current titles, and will be easily portable and embeddable in standard players
 such as mplayer and vlc.
 
 
-%ifnarch ppc ppc64 ppc64le
 %package        bdj
 Summary:        BDJ support for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
@@ -68,7 +65,6 @@ Provides:       libbluray-java = %{version}-%{release}
 The %{name}-bdj package contains the jar file needed to add BD-J support to
 %{name}.
 BD-J support is still considered alpha.
-%endif
 
 %package utils
 Summary:        Test utilities for %{name}
@@ -114,9 +110,7 @@ export JDK_HOME="%{_jvmdir}/java-1.7.0"
            --enable-doxygen-html \
            --enable-examples \
            --enable-udf \
-%ifnarch ppc ppc64 ppc64le
            --enable-bdjava
-%endif
 
 # Fix rpath issue
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
@@ -137,9 +131,7 @@ for i in bdjo_dump bdsplice clpi_dump hdmv_test index_dump libbluray_test \
          list_titles mobj_dump mpls_dump sound_dump
 do install -Dp -m 0755 .libs/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
 
-%ifnarch ppc ppc64 ppc64le
 install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
-%endif
 
 
 %post -p /sbin/ldconfig
@@ -151,10 +143,8 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %doc COPYING README.txt
 %{_libdir}/*.so.*
 
-%ifnarch ppc ppc64 ppc64le
 %files bdj
 %{_javadir}/libbluray-j2se-%{version}.jar
-%endif
 
 %files utils
 %{_bindir}/*
@@ -170,6 +160,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Thu Jun 11 2015 Karsten Hopp <karsten@redhat.com> 0.8.0-2git}
+- openjdk is available on all archs now, drop ppc* special cases
+
 * Wed Apr 29 2015 Xavier Bachelot <xavier@bachelot.org> 0.8.0-1
 - Update to 0.8.0 (RHBZ#1217475).
 
