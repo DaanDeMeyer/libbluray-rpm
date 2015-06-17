@@ -6,7 +6,7 @@
 
 Name:           libbluray
 Version:        0.8.0
-Release:        2%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
+Release:        3%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -160,6 +160,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.8.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Thu Jun 11 2015 Karsten Hopp <karsten@redhat.com> 0.8.0-2git}
 - openjdk is available on all archs now, drop ppc* special cases
 
