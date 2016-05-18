@@ -5,7 +5,7 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.9.2
+Version:        0.9.3
 Release:        1%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
@@ -162,6 +162,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 
 %changelog
+* Wed May 18 2016 Xavier Bachelot <xavier@bachelot.org> 0.9.3-1
+- Update to 0.9.3.
+
 * Tue Mar 01 2016 Xavier Bachelot <xavier@bachelot.org> 0.9.2-1
 - Update to 0.9.2 (RHBZ#1287343).
 
