@@ -1,53 +1,38 @@
-#global snapshot 1
-%global tarball_date 20130427
-%global git_hash 2b002fe52e8c2506ed52bf56c8b517d350dbb281
-%global git_short %(echo '%{git_hash}' | cut -c -13)
 %global build_pdf_doc 0
 
 Name:           libbluray
 Version:        0.9.3
-Release:        1%{?snapshot:.%{tarball_date}git%{git_short}}%{?dist}
+Release:        2%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
-%if 0%{?snapshot}
-# Use the commands below to generate a tarball.
-# git clone git://git.videolan.org/libbluray.git
-# cd libbluray
-# git archive --format=tar %{git_hash} --prefix=libbluray/ | bzip2 > ../libbluray-$( date +%Y%m%d )git%{git_short}.tar.bz2
-Source0:        %{name}-%{tarball_date}git%{git_short}.tar.bz2
-%else
+
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
-%endif
 Patch0:         libbluray-0.8.0-no_doxygen_timestamp.patch
 
-%if 0%{?snapshot}
-BuildRequires:  autoconf
-BuildRequires:  automake
-BuildRequires:  libtool
-%endif
-%if 0%{?rhel} >= 6
+%if 0%{?rhel} == 6
 BuildRequires:  java7-devel >= 1:1.7.0 
 %else
 BuildRequires:  java-devel >= 1:1.7.0
 %endif
-BuildRequires:  jpackage-utils
 BuildRequires:  ant
-BuildRequires:  libxml2-devel
+BuildRequires:  autoconf
+BuildRequires:  automake
 BuildRequires:  doxygen
-BuildRequires:  texlive-latex
-BuildRequires:  graphviz
-BuildRequires:  freetype-devel
 BuildRequires:  fontconfig-devel
-
+BuildRequires:  freetype-devel
+BuildRequires:  graphviz
+BuildRequires:  jpackage-utils
+BuildRequires:  libtool
+BuildRequires:  libxml2-devel
+BuildRequires:  texlive-latex
 
 %description
-This package is aiming to provide a full portable free open source bluray
-library, which can be plugged into popular media players to allow full bluray
+This package is aiming to provide a full portable free open source Blu-Ray
+library, which can be plugged into popular media players to allow full Blu-Ray
 navigation and playback on Linux. It will eventually be compatible with all
 current titles, and will be easily portable and embeddable in standard players
-such as mplayer and vlc.
-
+such as MPlayer and VLC.
 
 %package        bdj
 Summary:        BDJ support for %{name}
@@ -58,19 +43,16 @@ Requires:       java-headless >= 1:1.7.0
 Requires:       java >= 1:1.7.0
 %endif
 Requires:       jpackage-utils
-Obsoletes:      libbluray-java < 0.4.0-2
-Provides:       libbluray-java = %{version}-%{release}
 
 %description    bdj
 The %{name}-bdj package contains the jar file needed to add BD-J support to
-%{name}.
-BD-J support is still considered alpha.
+%{name}. BD-J support is still considered alpha.
 
-%package utils
+%package        utils
 Summary:        Test utilities for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
-%description utils
+%description    utils
 The %{name}-utils package contains test utilities for %{name}.
 
 %package        devel
@@ -81,25 +63,18 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
-
 %prep
-%if 0%{?snapshot}
-%setup -q -n %{name}
-%else
 %setup -q
-%endif
-%patch0 -p1 -b .no_timestamp
-
+%patch0 -p1
 
 %build
-%if 0%{?snapshot}
-autoreconf -vif
-%endif
-%if 0%{?fedora} > 20
+%if 0%{?fedora}
 export JDK_HOME="%{_jvmdir}/java-1.8.0"
 %else
 export JDK_HOME="%{_jvmdir}/java-1.7.0"
 %endif
+
+autoreconf -vif
 %configure --disable-static \
 %if %{build_pdf_doc}
            --enable-doxygen-pdf \
@@ -112,35 +87,27 @@ export JDK_HOME="%{_jvmdir}/java-1.7.0"
            --enable-udf \
            --enable-bdjava
 
-# Fix rpath issue
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-
 make %{?_smp_mflags}
 make doxygen-doc
 # Remove uneeded script
 rm -f doc/doxygen/html/installdox 
 
-
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
+%make_install
+find %{buildroot} -name '*.la' -delete
 
 # Install test utilities
 for i in bdjo_dump bdsplice clpi_dump hdmv_test index_dump libbluray_test \
          list_titles mobj_dump mpls_dump sound_dump
-do install -Dp -m 0755 .libs/$i $RPM_BUILD_ROOT%{_bindir}/$i; done;
+do install -Dp -m 0755 .libs/$i %{buildroot}%{_bindir}/$i; done;
 
 install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
-
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
-
 %files
-%{!?_licensedir:%global license %%doc}
 %license COPYING
 %doc README.txt
 %{_libdir}/*.so.*
@@ -154,14 +121,19 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %files devel
 %doc doc/doxygen/html
 %if %{build_pdf_doc}
-%doc doc/doxygen/libbluray.pdf
+%doc doc/doxygen/%{name}.pdf
 %endif
 %{_includedir}/*
 %{_libdir}/*.so
-%{_libdir}/pkgconfig/libbluray.pc
-
+%{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Sat Dec 03 2016 Simone Caronni <negativo17@gmail.com> - 0.9.3-2
+- Use autotools to get rid of RPATH.
+- Fix Java build requirements for RHEL/CentOS 7.
+- Clean up SPEC file, rpmlint fixes.
+- Add license macro.
+
 * Wed May 18 2016 Xavier Bachelot <xavier@bachelot.org> 0.9.3-1
 - Update to 0.9.3.
 
