@@ -2,13 +2,14 @@
 
 Name:           libbluray
 Version:        0.9.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
 
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 Patch0:         libbluray-0.8.0-no_doxygen_timestamp.patch
+Patch1:         libbluray-0.9.3-fix_opening_libjvm_so.patch
 
 %if 0%{?rhel} == 6
 BuildRequires:  java7-devel >= 1:1.7.0 
@@ -65,7 +66,9 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch0 -p1 -b .no_timestamp
+%patch1 -p1 -b .libjvm
+
 
 %build
 %if 0%{?fedora}
@@ -128,6 +131,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Sat Dec 03 2016 Xavier Bachelot <xavier@bachelot.org> 0.9.3-3
+- Add patch to fix search paths for libjvm.so (RHBZ#1380437).
+
 * Sat Dec 03 2016 Simone Caronni <negativo17@gmail.com> - 0.9.3-2
 - Use autotools to get rid of RPATH.
 - Fix Java build requirements for RHEL/CentOS 7.
