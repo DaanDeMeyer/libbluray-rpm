@@ -1,15 +1,14 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        0.9.3
-Release:        4%{?dist}
+Version:        1.0.0
+Release:        1%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
 
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 Patch0:         libbluray-0.8.0-no_doxygen_timestamp.patch
-Patch1:         libbluray-0.9.3-fix_opening_libjvm_so.patch
 
 %if 0%{?rhel} == 6
 BuildRequires:  java7-devel >= 1:1.7.0 
@@ -67,7 +66,6 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .no_timestamp
-%patch1 -p1 -b .libjvm
 
 
 %build
@@ -112,8 +110,8 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 %files
 %license COPYING
-%doc README.txt
-%{_libdir}/*.so.*
+%doc ChangeLog README.txt
+%{_libdir}/*.so.2*
 
 %files bdj
 %{_javadir}/libbluray-j2se-%{version}.jar
@@ -131,6 +129,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Thu Mar 02 2017 Xavier Bachelot <xavier@bachelot.org> 1.0.0-1
+- Update to 1.0.0.
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.9.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
