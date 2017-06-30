@@ -1,7 +1,7 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
@@ -84,9 +84,7 @@ autoreconf -vif
 %endif
            --disable-doxygen-ps \
            --enable-doxygen-html \
-           --enable-examples \
-           --enable-udf \
-           --enable-bdjava
+           --enable-examples
 
 make %{?_smp_mflags}
 make doxygen-doc
@@ -129,6 +127,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Wed Jun 21 2017 Xavier Bachelot <xavier@bachelot.org> 1.0.1-1
+- Update to 1.0.1.
+
 * Thu Mar 02 2017 Xavier Bachelot <xavier@bachelot.org> 1.0.0-1
 - Update to 1.0.0.
 
