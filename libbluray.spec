@@ -2,7 +2,7 @@
 
 Name:           libbluray
 Version:        1.0.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -10,11 +10,6 @@ URL:            http://www.videolan.org/developers/libbluray.html
 Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 Patch0:         libbluray-0.8.0-no_doxygen_timestamp.patch
 
-%if 0%{?rhel} == 6
-BuildRequires:  java7-devel >= 1:1.7.0 
-%else
-BuildRequires:  java-devel >= 1:1.7.0
-%endif
 BuildRequires:  ant
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -22,6 +17,7 @@ BuildRequires:  doxygen
 BuildRequires:  fontconfig-devel
 BuildRequires:  freetype-devel
 BuildRequires:  graphviz
+BuildRequires:  java-devel >= 1:1.8.0
 BuildRequires:  jpackage-utils
 BuildRequires:  libtool
 BuildRequires:  libxml2-devel
@@ -37,11 +33,7 @@ such as MPlayer and VLC.
 %package        bdj
 Summary:        BDJ support for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-%if 0%{?fedora} > 20
-Requires:       java-headless >= 1:1.7.0
-%else
-Requires:       java >= 1:1.7.0
-%endif
+Requires:       java-headless >= 1:1.8.0
 Requires:       jpackage-utils
 
 %description    bdj
@@ -69,11 +61,7 @@ developing applications that use %{name}.
 
 
 %build
-%if 0%{?fedora}
 export JDK_HOME="%{_jvmdir}/java-1.8.0"
-%else
-export JDK_HOME="%{_jvmdir}/java-1.7.0"
-%endif
 
 autoreconf -vif
 %configure --disable-static \
@@ -127,6 +115,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Mon Dec 11 2017 Simone Caronni <negativo17@gmail.com> - 1.0.2-2
+- Package no longer builds with OpenJDK 1.7, require 1.8 also for RHEL/CentOS.
+
 * Sun Dec 03 2017 Xavier Bachelot <xavier@bachelot.org> 1.0.2-1
 - Update to 1.0.2.
 
