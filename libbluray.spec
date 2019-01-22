@@ -90,9 +90,7 @@ do install -Dp -m 0755 .libs/$i %{buildroot}%{_bindir}/$i; done;
 
 install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%ldconfig_scriptlets
 
 %files
 %license COPYING
