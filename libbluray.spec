@@ -61,7 +61,7 @@ developing applications that use %{name}.
 
 
 %build
-export JDK_HOME="%{_jvmdir}/java-1.8.0"
+export JDK_HOME="%{_jvmdir}/java"
 
 autoreconf -vif
 %configure --disable-static \
@@ -114,8 +114,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
-* Tue Mar 24 2020 Xavier Bachelot <xavier@bachelot.org> 1.2.0-1
+* Wed May 06 2020 Xavier Bachelot <xavier@bachelot.org> 1.2.0-1
 - Update to 1.2.0
+- Use unversioned JDK_HOME
 
 * Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
