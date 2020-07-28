@@ -2,7 +2,7 @@
 
 Name:           libbluray
 Version:        1.2.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -114,6 +114,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Sat Jul 11 2020 Jiri Vanek <jvanek@redhat.com> - 1.2.0-2
 - Rebuilt for JDK-11, see https://fedoraproject.org/wiki/Changes/Java11
 
