@@ -1,8 +1,8 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        1.2.0
-Release:        3%{?dist}
+Version:        1.2.1
+Release:        1%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -84,11 +84,9 @@ rm -f doc/doxygen/html/installdox
 find %{buildroot} -name '*.la' -delete
 
 # Install test utilities
-for i in bdjo_dump bdsplice clpi_dump hdmv_test index_dump libbluray_test \
-         list_titles mobj_dump mpls_dump sound_dump
+for i in bdj_test bdjo_dump clpi_dump hdmv_test index_dump libbluray_test \
+         mobj_dump mpls_dump sound_dump
 do install -Dp -m 0755 .libs/$i %{buildroot}%{_bindir}/$i; done;
-
-install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 
 %ldconfig_scriptlets
 
@@ -114,6 +112,9 @@ install -Dp -m755 .libs/bdj_test %{buildroot}%{_bindir}/bdj_test;
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Sat Oct 24 2020 Xavier Bachelot <xavier@bachelot.org> 1.2.1-1
+- Update to 1.2.1 (RHBZ#1891243)
+
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
