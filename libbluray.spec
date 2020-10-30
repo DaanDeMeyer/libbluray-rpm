@@ -2,7 +2,7 @@
 
 Name:           libbluray
 Version:        1.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            http://www.videolan.org/developers/libbluray.html
@@ -20,7 +20,9 @@ BuildRequires:  graphviz
 BuildRequires:  java-devel >= 1:1.8.0
 BuildRequires:  jpackage-utils
 BuildRequires:  libtool
-BuildRequires:  libudfread-devel
+# https://bugzilla.redhat.com/show_bug.cgi?id=1892856
+# https://code.videolan.org/videolan/libudfread/-/merge_requests/3
+#BuildRequires:  libudfread-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  texlive-latex
 
@@ -108,6 +110,9 @@ find %{buildroot} -name '*.la' -delete
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Fri Oct 30 2020 Xavier Bachelot <xavier@bachelot.org> 1.2.1-2
+- Disable external libudfread (RHBZ#1892856)
+
 * Sat Oct 24 2020 Xavier Bachelot <xavier@bachelot.org> 1.2.1-1
 - Update to 1.2.1 (RHBZ#1891243)
 - Enable external libudfread
