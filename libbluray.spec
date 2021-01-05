@@ -25,6 +25,7 @@ BuildRequires:  libtool
 #BuildRequires:  libudfread-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  texlive-latex
+BuildRequires: make
 
 %description
 This package is aiming to provide a full portable free open source Blu-Ray
