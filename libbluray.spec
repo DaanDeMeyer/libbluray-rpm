@@ -5,9 +5,9 @@ Version:        1.3.0
 Release:        1%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
-URL:            http://www.videolan.org/developers/libbluray.html
+URL:            https://www.videolan.org/developers/libbluray.html
 
-Source0:        ftp://ftp.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
+Source0:        https://download.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 Patch0:         libbluray-0.8.0-no_doxygen_timestamp.patch
 
 BuildRequires:  ant
@@ -112,6 +112,7 @@ find %{buildroot} -name '*.la' -delete
 * Wed Apr 07 2021 Xavier Bachelot <xavier@bachelot.org> 1.3.0-1
 - Update to 1.3.0 (RHBZ#1946585)
 - Enable external libudfread
+- Use https for URL and Source0
 
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
