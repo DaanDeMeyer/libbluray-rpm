@@ -20,9 +20,7 @@ BuildRequires:  graphviz
 BuildRequires:  java-devel >= 1:1.8.0
 BuildRequires:  jpackage-utils
 BuildRequires:  libtool
-# https://bugzilla.redhat.com/show_bug.cgi?id=1892856
-# https://code.videolan.org/videolan/libudfread/-/merge_requests/3
-#BuildRequires:  libudfread-devel
+BuildRequires:  libudfread-devel >= 1.1.1
 BuildRequires:  libxml2-devel
 BuildRequires:  texlive-latex
 BuildRequires: make
@@ -113,6 +111,7 @@ find %{buildroot} -name '*.la' -delete
 %changelog
 * Wed Apr 07 2021 Xavier Bachelot <xavier@bachelot.org> 1.3.0-1
 - Update to 1.3.0 (RHBZ#1946585)
+- Enable external libudfread
 
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
