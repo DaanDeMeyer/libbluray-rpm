@@ -1,8 +1,8 @@
 %global build_pdf_doc 0
 
 Name:           libbluray
-Version:        1.3.0
-Release:        4%{?dist}
+Version:        1.3.1
+Release:        1%{?dist}
 Summary:        Library to access Blu-Ray disks for video playback 
 License:        LGPLv2+
 URL:            https://www.videolan.org/developers/libbluray.html
@@ -22,8 +22,8 @@ BuildRequires:  jpackage-utils
 BuildRequires:  libtool
 BuildRequires:  libudfread-devel >= 1.1.1
 BuildRequires:  libxml2-devel
+BuildRequires:  make
 BuildRequires:  texlive-latex
-BuildRequires: make
 
 %description
 This package is aiming to provide a full portable free open source Blu-Ray
@@ -76,7 +76,7 @@ autoreconf -vif
            --enable-doxygen-html \
            --enable-examples
 
-make %{?_smp_mflags}
+%make_build
 make doxygen-doc
 # Remove uneeded script
 rm -f doc/doxygen/html/installdox 
@@ -89,7 +89,7 @@ find %{buildroot} -name '*.la' -delete
 
 %files
 %license COPYING
-%doc ChangeLog README.txt
+%doc ChangeLog README.md
 %{_libdir}/*.so.2*
 
 %files bdj
@@ -109,6 +109,9 @@ find %{buildroot} -name '*.la' -delete
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Sun Mar 06 2022 Xavier Bachelot <xavier@bachelot.org> - 1.3.1-1
+- Update to 1.3.1 (RHBZ#2061184)
+
 * Sat Feb 05 2022 Jiri Vanek <jvanek@redhat.com> - 1.3.0-4
 - Rebuilt for java-17-openjdk as system jdk
 
