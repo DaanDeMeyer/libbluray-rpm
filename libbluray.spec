@@ -9,6 +9,9 @@ URL:            https://www.videolan.org/developers/libbluray.html
 
 Source0:        https://download.videolan.org/pub/videolan/%{name}/%{version}/%{name}-%{version}.tar.bz2
 Patch0:         libbluray-0.8.0-no_doxygen_timestamp.patch
+# Merged upstream but not in a stable release yet.
+# https://code.videolan.org/videolan/libbluray/-/commit/8f26777b1ce124ff761f80ef52d6be10bcea323e
+Patch1:          8f26777b1ce124ff761f80ef52d6be10bcea323e.patch
 
 BuildRequires:  ant
 BuildRequires:  autoconf
@@ -60,6 +63,7 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .no_timestamp
+%patch1 -p1
 
 
 %build
